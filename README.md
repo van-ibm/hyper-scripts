@@ -11,11 +11,11 @@ Hyper Scripts is a sidebar plugin for [Hyper](https://hyper.is/) that lists comm
 
 ## Install
 
-To install, edit `~/.hyper.js` and add `"hyper-scripts"` and `"hyper-active-session"` to the `plugins` list.
+To install, edit `~/.hyper.js` and add **hyper-scripts** and **hyper-active-session** to the `plugins` list.
 
 ```javascript
 plugins: [
-  "hyper-active-session"
+  "hyper-active-session",
   "hyper-scripts",
 ],
 ```
