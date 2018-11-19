@@ -36,6 +36,7 @@ hyperscripts: {
         "# what's today",
         "export DATE=$(date | awk '{ print $3}') && export MONTH=$(date | awk '{ print $2}')",
         "echo Today is the $DATE of $MONTH"
+       ]
     },
     ...
   ]
