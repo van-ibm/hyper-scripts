@@ -1,6 +1,6 @@
 {
   "name": "hyper-scripts",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Hyper plugin that displays a list of commands as a convenient sidebar",
   "keywords": [
     "hyper.app",
