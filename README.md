@@ -26,6 +26,9 @@ To configure the plugin, add the following to your `config` property in `~/.hype
 
 ```javascript
 hyperscripts: {
+  activeColor: 'cyan',
+  inactiveColor: 'white',
+  runOnClick: true,
   scripts: [
     {
       title: "Demo",
@@ -42,6 +45,12 @@ hyperscripts: {
   ]
 }
 ```
+
+The following properties control the interface and all scripts:
+
+- `activeColor` - A command that has not yet run (i.e. been clicked), defaults to `foregroundColor`
+- `inactiveColor` - A command that has been run, defaults to `foregroundColor`
+- `runOnClick` - Execute a command upon click, defaults to `false`
 
 Each object in `scripts` has the following properties:
 

@@ -15,15 +15,30 @@ export function reduceUI(state, { type, config }) {
   return state;
 }
 
-export function mapHyperState({ ui: { fontFamily, fontSize, fontWeightBold, backgroundColor, foregroundColor, hyperscripts } }, map) {
+export function mapHyperState({ ui: { colors, fontFamily, fontSize, fontWeightBold, backgroundColor, foregroundColor, hyperscripts } }, map) {
+  const { runOnClick = false } = hyperscripts;
+  let activeColor = foregroundColor;
+  let inactiveColor = foregroundColor;
+
+  if (hyperscripts.activeColor) {
+    activeColor = colors[hyperscripts.activeColor];
+  }
+
+  if (hyperscripts.inactiveColor) {
+    inactiveColor = colors[hyperscripts.inactiveColor];
+  }
+  
   return Object.assign({}, map, {
     backgroundColor,
     foregroundColor,
     fontFamily,
     fontSize,
     fontWeightBold,
-    hyperscripts
-  })
+    hyperscripts,
+    activeColor,
+    inactiveColor,
+    runOnClick
+  });
 }
 
 export function decorateHyper(Hyper) {
@@ -41,7 +56,7 @@ export function decorateHyper(Hyper) {
       this.state = {
         scripts,
         selected: 0,
-        opacity: 0.1
+        opacity: 0.05
       };
 
       this.handleChange = this.handleChange.bind(this);
@@ -59,13 +74,23 @@ export function decorateHyper(Hyper) {
       this.setState({ opacity: 1 });
     }
     mouseLeave (event) {
-      this.setState({ opacity: 0.1 });
+      this.setState({ opacity: 0.05 });
     }
 
     render() {
       const { scripts, selected } = this.state;
 
-      const font = `${this.props.fontWeightBold} ${this.props.fontSize}px ${this.props.fontFamily.split(',')[0]}`;
+      const {
+        fontSize,
+        fontWeightBold,
+        fontFamily,
+        foregroundColor,
+        activeColor,
+        inactiveColor,
+        runOnClick
+      } = this.props;
+
+      const font = `${fontWeightBold} ${fontSize}px ${fontFamily.split(',')[0]}`;
 
       const customChildren = (
         <div>
@@ -75,7 +100,8 @@ export function decorateHyper(Hyper) {
               <select onChange={this.handleChange}>
                 {scripts.map((script, i) => <option value={i}>{script.title.toUpperCase()}</option>)}
               </select>
-              <Commands commands={scripts[selected].commands} font={font} color={this.props.foregroundColor}/>
+              <Commands commands={scripts[selected].commands} font={font} foregroundColor={foregroundColor} 
+                activeColor={activeColor} inactiveColor={inactiveColor} runOnClick={runOnClick}/>
             </div>
             <style jsx>{`
               .commands {
@@ -111,11 +137,4 @@ export function decorateHyper(Hyper) {
       return <Hyper {...this.props} customChildren={customChildren} />
     }
   }
-}
-
-export function terminal(cmd) {
-  window.rpc.emit('run command', {
-    uid: window.ACTIVE_SESSION,
-    cmd,
-  });
 }
